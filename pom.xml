@@ -10,8 +10,8 @@
     <packaging>pom</packaging>
 
     <modules>
-        <module>easystatemechine-core</module>
-        <module>easystatemechine-example</module>
+        <module>easystatemachine-core</module>
+        <module>easystatemachine-example</module>
     </modules>
 
 
