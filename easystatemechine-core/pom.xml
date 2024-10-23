@@ -3,11 +3,11 @@
     <modelVersion>4.0.0</modelVersion>
     <parent>
         <groupId>com.openquartz</groupId>
-        <artifactId>easy-statemechine</artifactId>
+        <artifactId>easy-statemachine</artifactId>
         <version>${revision}</version>
     </parent>
 
-    <artifactId>easystatemechine-core</artifactId>
+    <artifactId>easystatemachine-core</artifactId>
     <packaging>jar</packaging>
 
     <name>${project.artifactId}</name>

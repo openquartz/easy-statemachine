@@ -5,7 +5,7 @@
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>com.openquartz</groupId>
-    <artifactId>easy-statemechine</artifactId>
+    <artifactId>easy-statemachine</artifactId>
     <version>${revision}</version>
     <packaging>pom</packaging>
 
@@ -47,7 +47,7 @@
 
             <dependency>
                 <groupId>com.openquartz</groupId>
-                <artifactId>easystatemechine-core</artifactId>
+                <artifactId>easystatemachine-core</artifactId>
                 <version>${revision}</version>
             </dependency>
 
