@@ -37,7 +37,7 @@ public class StateMachineImpl<S, E, C> implements StateMachine<S, E, C> {
 
         List<Transition<S, E, C>> transitions = sourceState.getEventTransitions(event);
 
-        return transitions != null && transitions.size() != 0;
+        return transitions != null && !transitions.isEmpty();
     }
 
     @Override
@@ -59,7 +59,7 @@ public class StateMachineImpl<S, E, C> implements StateMachine<S, E, C> {
 
         List<Transition<S, E, C>> transitions = sourceState.getEventTransitions(event);
 
-        if (transitions == null || transitions.size() == 0) {
+        if (transitions == null || transitions.isEmpty()) {
             return null;
         }
 
@@ -79,7 +79,7 @@ public class StateMachineImpl<S, E, C> implements StateMachine<S, E, C> {
     private State getState(S currentStateId) {
         State state = StateHelper.getState(stateMap, currentStateId);
         if (state == null) {
-            showStateMachine();
+            showStateMachine(Visitor.SYSTEM_OUT);
             throw new StateMachineException(currentStateId + " is not found, please check state machine");
         }
         return state;
@@ -103,15 +103,8 @@ public class StateMachineImpl<S, E, C> implements StateMachine<S, E, C> {
     }
 
     @Override
-    public void showStateMachine() {
-        SysOutVisitor sysOutVisitor = new SysOutVisitor();
-        accept(sysOutVisitor);
-    }
-
-    @Override
-    public String generatePlantUML() {
-        PlantUMLVisitor plantUMLVisitor = new PlantUMLVisitor();
-        return accept(plantUMLVisitor);
+    public void showStateMachine(Visitor visitor) {
+        accept(visitor);
     }
 
     @Override

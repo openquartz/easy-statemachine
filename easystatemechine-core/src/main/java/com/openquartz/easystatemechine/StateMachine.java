@@ -7,7 +7,7 @@ package com.openquartz.easystatemechine;
  * @param <E> the type of event
  * @param <C> the user defined context
  */
-public interface StateMachine<S, E, C> extends Visitable{
+public interface StateMachine<S, E, C> extends Visitable {
 
     /**
      * Verify if an event {@code E} can be fired from current state {@code S}
@@ -15,7 +15,7 @@ public interface StateMachine<S, E, C> extends Visitable{
      * @param event
      * @return
      */
-    boolean verify(S sourceStateId,E event);
+    boolean verify(S sourceStateId, E event);
 
     /**
      * Send an event {@code E} to the state machine.
@@ -25,7 +25,7 @@ public interface StateMachine<S, E, C> extends Visitable{
      * @param ctx the user defined context
      * @return the target state
      */
-     S fireEvent(S sourceState, E event, C ctx);
+    S fireEvent(S sourceState, E event, C ctx);
 
     /**
      * MachineId is the identifier for a State Machine
@@ -36,7 +36,5 @@ public interface StateMachine<S, E, C> extends Visitable{
     /**
      * Use visitor pattern to display the structure of the state machine
      */
-    void showStateMachine();
-
-    String generatePlantUML();
+    void showStateMachine(Visitor visitor);
 }

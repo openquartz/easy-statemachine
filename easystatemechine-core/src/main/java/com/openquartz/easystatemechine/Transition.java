@@ -11,6 +11,7 @@ import com.openquartz.easystatemechine.impl.TransitionType;
  * @param <C> the type of user defined context, which is used to hold application data
  */
 public interface Transition<S, E, C>{
+
     /**
      * Gets the source state of this transition.
      *
@@ -54,6 +55,7 @@ public interface Transition<S, E, C>{
      */
 
     State<S, E, C> transit(C ctx, boolean checkCondition);
+
     /**
      * Verify transition correctness
      */

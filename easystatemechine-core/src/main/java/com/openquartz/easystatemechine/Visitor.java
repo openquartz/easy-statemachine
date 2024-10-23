@@ -1,11 +1,17 @@
 package com.openquartz.easystatemechine;
 
+import com.openquartz.easystatemechine.impl.PlantUMLVisitor;
+import com.openquartz.easystatemechine.impl.SysOutVisitor;
+
 /**
  * Visitor
  */
 public interface Visitor {
 
     char LF = '\n';
+
+    Visitor SYSTEM_OUT = new SysOutVisitor();
+    Visitor PLANT_UML = new PlantUMLVisitor();
 
     /**
      * @param visitable the element to be visited.
