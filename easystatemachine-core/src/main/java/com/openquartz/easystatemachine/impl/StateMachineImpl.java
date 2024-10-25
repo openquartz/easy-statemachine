@@ -7,6 +7,7 @@ import com.openquartz.easystatemachine.Visitor;
 import com.openquartz.easystatemachine.builder.FailCallback;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 /**
  * For performance consideration,
@@ -33,7 +34,7 @@ public class StateMachineImpl<S, E, C> implements StateMachine<S, E, C> {
     public boolean verify(S sourceStateId, E event) {
         isReady();
 
-        State sourceState = getState(sourceStateId);
+        State<S, E, C> sourceState = getState(sourceStateId);
 
         List<Transition<S, E, C>> transitions = sourceState.getEventTransitions(event);
 
@@ -55,7 +56,7 @@ public class StateMachineImpl<S, E, C> implements StateMachine<S, E, C> {
     }
 
     private Transition<S, E, C> routeTransition(S sourceStateId, E event, C ctx) {
-        State sourceState = getState(sourceStateId);
+        State<S, E, C> sourceState = getState(sourceStateId);
 
         List<Transition<S, E, C>> transitions = sourceState.getEventTransitions(event);
 
@@ -76,8 +77,8 @@ public class StateMachineImpl<S, E, C> implements StateMachine<S, E, C> {
         return transit;
     }
 
-    private State getState(S currentStateId) {
-        State state = StateHelper.getState(stateMap, currentStateId);
+    private State<S, E, C> getState(S currentStateId) {
+        State<S, E, C> state = StateHelper.getState(stateMap, currentStateId);
         if (state == null) {
             showStateMachine(Visitor.SYSTEM_OUT);
             throw new StateMachineException(currentStateId + " is not found, please check state machine");
@@ -93,12 +94,25 @@ public class StateMachineImpl<S, E, C> implements StateMachine<S, E, C> {
 
     @Override
     public String accept(Visitor visitor) {
+
+        List<State<?, ?, ?>> startStateList = stateMap.values()
+            .stream()
+            .filter(e -> e instanceof StartStateImpl)
+            .collect(Collectors.toList());
+
         StringBuilder sb = new StringBuilder();
-        sb.append(visitor.visitOnEntry(this));
-        for (State state : stateMap.values()) {
+        sb.append(visitor.visitOnEntry(this, startStateList));
+
+        for (State<S, E, C> state : stateMap.values()) {
             sb.append(state.accept(visitor));
         }
-        sb.append(visitor.visitOnExit(this));
+
+        List<State<?, ?, ?>> endStateList = stateMap.values()
+            .stream()
+            .filter(e -> e instanceof EndStateImpl)
+            .collect(Collectors.toList());
+
+        sb.append(visitor.visitOnExit(this, endStateList));
         return sb.toString();
     }
 

@@ -4,41 +4,53 @@ import com.openquartz.easystatemachine.State;
 import com.openquartz.easystatemachine.StateMachine;
 import com.openquartz.easystatemachine.Transition;
 import com.openquartz.easystatemachine.Visitor;
+import java.util.List;
 
 /**
  * PlantUMLVisitor
  */
 public class PlantUMLVisitor implements Visitor {
 
-    /**
-     * Since the state machine is stateless, there is no initial state.
-     *
-     * You have to add "[*] -> initialState" to mark it as a state machine diagram.
-     * otherwise it will be recognized as a sequence diagram.
-     *
-     * @param visitable the element to be visited.
-     * @return
-     */
     @Override
-    public String visitOnEntry(StateMachine<?, ?, ?> visitable) {
-        return "@startuml" + LF;
+    public String visitOnEntry(StateMachine<?, ?, ?> visitable, List<State<?, ?, ?>> startStateList) {
+        StringBuilder sb = new StringBuilder("@startuml" + LF);
+
+        for (State<?, ?, ?> state : startStateList) {
+            sb.append("[*]")
+                .append(" --> ")
+                .append(state.getId())
+                .append(LF);
+        }
+
+        return sb.toString();
     }
 
     @Override
-    public String visitOnExit(StateMachine<?, ?, ?> visitable) {
-        return "@enduml";
+    public String visitOnExit(StateMachine<?, ?, ?> visitable, List<State<?, ?, ?>> endStateList) {
+
+        StringBuilder sb = new StringBuilder();
+
+        for (State<?, ?, ?> state : endStateList) {
+            sb.append(state.getId())
+                .append(" --> ")
+                .append("[*]")
+                .append(LF);
+        }
+
+        sb.append("@enduml");
+        return sb.toString();
     }
 
     @Override
     public String visitOnEntry(State<?, ?, ?> state) {
         StringBuilder sb = new StringBuilder();
-        for(Transition transition: state.getAllTransitions()){
+        for (Transition<?, ?, ?> transition : state.getAllTransitions()) {
             sb.append(transition.getSource().getId())
-                    .append(" --> ")
-                    .append(transition.getTarget().getId())
-                    .append(" : ")
-                    .append(transition.getEvent())
-                    .append(LF);
+                .append(" --> ")
+                .append(transition.getTarget().getId())
+                .append(" : ")
+                .append(transition.getEvent())
+                .append(LF);
         }
         return sb.toString();
     }

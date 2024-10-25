@@ -4,6 +4,7 @@ import com.openquartz.easystatemachine.State;
 import com.openquartz.easystatemachine.StateMachine;
 import com.openquartz.easystatemachine.Transition;
 import com.openquartz.easystatemachine.Visitor;
+import java.util.List;
 
 /**
  * SysOutVisitor
@@ -11,14 +12,14 @@ import com.openquartz.easystatemachine.Visitor;
 public class SysOutVisitor implements Visitor {
 
     @Override
-    public String visitOnEntry(StateMachine<?, ?, ?> stateMachine) {
-        String entry = "-----StateMachine:"+stateMachine.getMachineId()+"-------";
+    public String visitOnEntry(StateMachine<?, ?, ?> stateMachine, List<State<?, ?, ?>> startStateList) {
+        String entry = "-----StateMachine:" + stateMachine.getMachineId() + "-------";
         System.out.println(entry);
         return entry;
     }
 
     @Override
-    public String visitOnExit(StateMachine<?, ?, ?> stateMachine) {
+    public String visitOnExit(StateMachine<?, ?, ?> visitable, List<State<?, ?, ?>> endStateList) {
         String exit = "------------------------";
         System.out.println(exit);
         return exit;
@@ -27,11 +28,11 @@ public class SysOutVisitor implements Visitor {
     @Override
     public String visitOnEntry(State<?, ?, ?> state) {
         StringBuilder sb = new StringBuilder();
-        String stateStr = "State:"+state.getId();
+        String stateStr = "State:" + state.getId();
         sb.append(stateStr).append(LF);
         System.out.println(stateStr);
-        for(Transition transition: state.getAllTransitions()){
-            String transitionStr = "    Transition:"+transition;
+        for (Transition<?, ?, ?> transition : state.getAllTransitions()) {
+            String transitionStr = "    Transition:" + transition;
             sb.append(transitionStr).append(LF);
             System.out.println(transitionStr);
         }

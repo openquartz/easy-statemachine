@@ -6,6 +6,7 @@ import com.openquartz.easystatemachine.StateMachineFactory;
 import com.openquartz.easystatemachine.impl.StateMachineImpl;
 import com.openquartz.easystatemachine.impl.TransitionType;
 import java.util.Map;
+import java.util.Objects;
 import java.util.concurrent.ConcurrentHashMap;
 
 /**
@@ -16,9 +17,19 @@ public class StateMachineBuilderImpl<S, E, C> implements StateMachineBuilder<S, 
     /**
      * StateMap is the same with stateMachine, as the core of state machine is holding reference to states.
      */
-    private final Map<S, State<S, E, C>> stateMap = new ConcurrentHashMap<>();
-    private final StateMachineImpl<S, E, C> stateMachine = new StateMachineImpl<>(stateMap);
+    private final Map<S, State<S, E, C>> stateMap;
+    private final StateMachineImpl<S, E, C> stateMachine;
     private FailCallback<S, E, C> failCallback = new NumbFailCallback<>();
+
+    public StateMachineBuilderImpl(Map<S, State<S, E, C>> stateMap) {
+        if (Objects.nonNull(stateMap)) {
+            this.stateMap = stateMap;
+        } else {
+            this.stateMap = new ConcurrentHashMap<>();
+        }
+
+        this.stateMachine = new StateMachineImpl<>(this.stateMap);
+    }
 
     @Override
     public ExternalTransitionBuilder<S, E, C> externalTransition() {

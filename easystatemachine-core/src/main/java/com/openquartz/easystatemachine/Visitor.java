@@ -2,6 +2,7 @@ package com.openquartz.easystatemachine;
 
 import com.openquartz.easystatemachine.impl.PlantUMLVisitor;
 import com.openquartz.easystatemachine.impl.SysOutVisitor;
+import java.util.List;
 
 /**
  * Visitor
@@ -17,13 +18,13 @@ public interface Visitor {
      * @param visitable the element to be visited.
      * @return
      */
-    String visitOnEntry(StateMachine<?, ?, ?> visitable);
+    String visitOnEntry(StateMachine<?, ?, ?> visitable, List<State<?, ?, ?>> startStateList);
 
     /**
      * @param visitable the element to be visited.
      * @return
      */
-    String visitOnExit(StateMachine<?, ?, ?> visitable);
+    String visitOnExit(StateMachine<?, ?, ?> visitable, List<State<?, ?, ?>> endStateList);
 
     /**
      * @param visitable the element to be visited.
