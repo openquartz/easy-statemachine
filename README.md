@@ -143,7 +143,7 @@ Closed --> [*]
 
 ```
 
-#### 6、使用状态机
+#### 6、触发状态机
 ```java
  stateMachine.fireEvent(None, Normal_Update, new Context());
 ```
