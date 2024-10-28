@@ -114,8 +114,8 @@ StateMachineBuilderFactory.declare();
 ```java
 stateMachine.show(Visitor.PLANT_UML);
 ```
-得到plantuml格式的图
-```plantuml
+得到plantuml格式的图 ![UML状态机](./doc/image/uml.png)
+```puml
 
 @startuml
 [*] --> None
