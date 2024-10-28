@@ -1,8 +1,7 @@
 package com.openquartz.easystatemachine;
 
 /**
- * Generic strategy interface used by a state machine to respond
- * events by executing an {@code Action} with a {@link StateContext}.
+ *状态机使用的通用策略接口，通过使用 {@link StateContext} 执行 {@code Action} 来响应事件。
  */
 public interface Action<S, E, C> {
 

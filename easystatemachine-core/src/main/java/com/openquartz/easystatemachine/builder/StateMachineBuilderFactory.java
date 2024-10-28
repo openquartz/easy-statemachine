@@ -13,8 +13,14 @@ public class StateMachineBuilderFactory<S, E, C> {
     private StateMachineBuilderFactory() {
     }
 
+    /**
+     * start state
+     */
     private S[] startStateIds;
 
+    /**
+     * end state
+     */
     private S[] endStateIds;
 
     public static <S, E, C> StateMachineBuilderFactory<S, E, C> declare() {

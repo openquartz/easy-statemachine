@@ -11,7 +11,9 @@ import java.util.Map;
 /**
  * TransitionBuilderImpl
  */
-class TransitionBuilderImpl<S,E,C> implements ExternalTransitionBuilder<S,E,C>, InternalTransitionBuilder<S,E,C>, From<S,E,C>, On<S,E,C>, To<S,E,C> {
+class TransitionBuilderImpl<S,E,C> implements ExternalTransitionBuilder<S,E,C>,
+    InternalTransitionBuilder<S,E,C>,
+    From<S,E,C>, On<S,E,C>, To<S,E,C> {
 
     final Map<S, State<S, E, C>> stateMap;
 

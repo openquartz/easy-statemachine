@@ -5,19 +5,19 @@ package com.openquartz.easystatemachine.impl;
  */
 public enum TransitionType {
     /**
-     * Implies that the Transition, if triggered, occurs without exiting or entering the source State
-     * (i.e., it does not cause a state change). This means that the entry or exit condition of the source
-     * State will not be invoked. An internal Transition can be taken even if the SateMachine is in one or
-     * more Regions nested within the associated State.
+     表示 Transition（如果触发）在不退出或进入源 State 的情况下发生（即，它不会导致 State 更改）。
+     这意味着不会调用源 State 的 entry 或 exit 条件。
+     即使 SateMachine 位于嵌套在关联 State 内的一个或多个 Region 中，也可以采用内部 Transition。
      */
     INTERNAL,
+
     /**
-     * Implies that the Transition, if triggered, will not exit the composite (source) State, but it
-     * will exit and re-enter any state within the composite State that is in the current state configuration.
+     * 意味着 Transition（如果触发）不会退出复合（源）State，但会退出并重新进入复合 State 中当前 state 配置中的任何状态。
      */
     LOCAL,
+
     /**
-     * Implies that the Transition, if triggered, will exit the composite (source) State.
+     * 表示 Transition（如果触发）将退出复合（源）State。
      */
     EXTERNAL
 }

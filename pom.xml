@@ -14,12 +14,12 @@
         <module>easystatemachine-example</module>
     </modules>
 
-
     <properties>
         <java.version>1.8</java.version>
         <revision>1.0.0-beta</revision>
 
         <lombok.version>1.18.16</lombok.version>
+        <slf4j.version>2.0.16</slf4j.version>
 
         <maven.javadoc.failOnError>false</maven.javadoc.failOnError>
         <maven.compiler.encoding>UTF-8</maven.compiler.encoding>
@@ -44,11 +44,16 @@
                 <version>${lombok.version}</version>
             </dependency>
 
-
             <dependency>
                 <groupId>com.openquartz</groupId>
                 <artifactId>easystatemachine-core</artifactId>
                 <version>${revision}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.slf4j</groupId>
+                <artifactId>slf4j-api</artifactId>
+                <version>${slf4j.version}</version>
             </dependency>
 
         </dependencies>

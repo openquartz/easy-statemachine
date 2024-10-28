@@ -36,5 +36,5 @@ public interface StateMachine<S, E, C> extends Visitable {
     /**
      * Use visitor pattern to display the structure of the state machine
      */
-    void showStateMachine(Visitor visitor);
+    void show(Visitor visitor);
 }

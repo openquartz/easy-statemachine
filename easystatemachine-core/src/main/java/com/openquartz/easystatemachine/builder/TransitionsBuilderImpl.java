@@ -13,7 +13,9 @@ import java.util.Map;
 /**
  * TransitionsBuilderImpl
  */
-public class TransitionsBuilderImpl<S,E,C> extends TransitionBuilderImpl<S,E,C> implements ExternalTransitionsBuilder<S,E,C> {
+public class TransitionsBuilderImpl<S, E, C> extends TransitionBuilderImpl<S, E, C> implements
+    ExternalTransitionsBuilder<S, E, C> {
+
     /**
      * This is for fromAmong where multiple sources can be configured to point to one target
      */
@@ -27,7 +29,7 @@ public class TransitionsBuilderImpl<S,E,C> extends TransitionBuilderImpl<S,E,C> 
 
     @Override
     public From<S, E, C> fromAmong(S... stateIds) {
-        for(S stateId : stateIds) {
+        for (S stateId : stateIds) {
             sources.add(StateHelper.getState(super.stateMap, stateId));
         }
         return this;
@@ -35,8 +37,8 @@ public class TransitionsBuilderImpl<S,E,C> extends TransitionBuilderImpl<S,E,C> 
 
     @Override
     public On<S, E, C> on(E event) {
-        for(State source : sources) {
-            Transition transition = source.addTransition(event, super.target, super.transitionType);
+        for (State<S, E, C> source : sources) {
+            Transition<S, E, C> transition = source.addTransition(event, super.target, super.transitionType);
             transitions.add(transition);
         }
         return this;
@@ -44,7 +46,7 @@ public class TransitionsBuilderImpl<S,E,C> extends TransitionBuilderImpl<S,E,C> 
 
     @Override
     public When<S, E, C> when(Condition<C> condition) {
-        for(Transition transition : transitions){
+        for (Transition<S, E, C> transition : transitions) {
             transition.setCondition(condition);
         }
         return this;
@@ -52,7 +54,7 @@ public class TransitionsBuilderImpl<S,E,C> extends TransitionBuilderImpl<S,E,C> 
 
     @Override
     public void perform(Action<S, E, C> action) {
-        for(Transition transition : transitions){
+        for (Transition<S, E, C> transition : transitions) {
             transition.setAction(action);
         }
     }

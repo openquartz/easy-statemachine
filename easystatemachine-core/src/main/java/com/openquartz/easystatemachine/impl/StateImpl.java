@@ -9,23 +9,24 @@ import java.util.List;
 /**
  * StateImpl
  */
-public class StateImpl<S,E,C> implements State<S,E,C> {
-    protected final S stateId;
-    private final EventTransitions<S,E,C> eventTransitions = new EventTransitions<>();
+public class StateImpl<S, E, C> implements State<S, E, C> {
 
-    StateImpl(S stateId){
+    protected final S stateId;
+    private final EventTransitions<S, E, C> eventTransitions = new EventTransitions<>();
+
+    StateImpl(S stateId) {
         this.stateId = stateId;
     }
 
     @Override
-    public Transition<S, E, C> addTransition(E event, State<S,E,C> target, TransitionType transitionType) {
+    public Transition<S, E, C> addTransition(E event, State<S, E, C> target, TransitionType transitionType) {
         Transition<S, E, C> newTransition = new TransitionImpl<>();
         newTransition.setSource(this);
         newTransition.setTarget(target);
         newTransition.setEvent(event);
         newTransition.setType(transitionType);
 
-        Debugger.debug("Begin to add new transition: "+ newTransition);
+        Debugger.debug("Begin to add new transition: " + newTransition);
 
         eventTransitions.put(event, newTransition);
         return newTransition;
@@ -54,17 +55,18 @@ public class StateImpl<S,E,C> implements State<S,E,C> {
     }
 
     @Override
-    public boolean equals(Object anObject){
-        if(anObject instanceof State){
-            State other = (State)anObject;
-            if(this.stateId.equals(other.getId()))
+    public boolean equals(Object anObject) {
+        if (anObject instanceof State) {
+            State<?, ?, ?> other = (State<?, ?, ?>) anObject;
+            if (this.stateId.equals(other.getId())) {
                 return true;
+            }
         }
         return false;
     }
 
     @Override
-    public String toString(){
+    public String toString() {
         return stateId.toString();
     }
 }

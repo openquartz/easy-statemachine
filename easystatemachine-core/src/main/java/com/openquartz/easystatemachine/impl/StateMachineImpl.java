@@ -8,14 +8,13 @@ import com.openquartz.easystatemachine.builder.FailCallback;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
+import lombok.extern.slf4j.Slf4j;
 
 /**
- * For performance consideration,
- * The state machine is made "stateless" on purpose.
- * Once it's built, it can be shared by multi-thread
- * <p>
- * One side effect is since the state machine is stateless, we can not get current state from State Machine.
+ 出于性能考虑，状态机是故意设为 “无状态” 的。一旦构建完成，就可以被多线程共享
+ <p>一个副作用是，由于状态机是无状态的，我们无法从 State Machine 获取当前状态。
  */
+@Slf4j
 public class StateMachineImpl<S, E, C> implements StateMachine<S, E, C> {
 
     private String machineId;
@@ -80,7 +79,7 @@ public class StateMachineImpl<S, E, C> implements StateMachine<S, E, C> {
     private State<S, E, C> getState(S currentStateId) {
         State<S, E, C> state = StateHelper.getState(stateMap, currentStateId);
         if (state == null) {
-            showStateMachine(Visitor.SYSTEM_OUT);
+            show(Visitor.SYSTEM_OUT);
             throw new StateMachineException(currentStateId + " is not found, please check state machine");
         }
         return state;
@@ -117,8 +116,10 @@ public class StateMachineImpl<S, E, C> implements StateMachine<S, E, C> {
     }
 
     @Override
-    public void showStateMachine(Visitor visitor) {
-        accept(visitor);
+    public void show(Visitor visitor) {
+        String accept = accept(visitor);
+        log.info(">>>>>>>>>>>>>>>>>---------StateMachine({}) Start--------->>>>>>>>>>>>>>>>>\n{}", machineId, accept);
+        log.info(">>>>>>>>>>>>>>>>>---------StateMachine({}) End--------->>>>>>>>>>>>>>>>>", machineId);
     }
 
     @Override
