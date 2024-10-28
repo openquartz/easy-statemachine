@@ -7,13 +7,14 @@
 ### 入口代码
 
 `com.openquartz.easystatemachine.builder.StateMachineBuilderFactory`
-1、声明
+
+#### 1、声明
 
 ```java
 StateMachineBuilderFactory.declare();
 ```
 
-2、指定开始状态与结束状态
+#### 2、指定开始状态与结束状态
 
 ```java
        StateMachineBuilder<PriceAdjustmentTaskStatusEnum, PriceAdjustmentTaskEventEnum, Context> builder =
@@ -23,7 +24,7 @@ StateMachineBuilderFactory.declare();
         .create();
 ```
 
-3、构建状态机
+#### 3、构建状态机
 ```java
 
 
@@ -104,13 +105,13 @@ StateMachineBuilderFactory.declare();
                 .perform(doAction()));
 ```
 
-4、创建状态机
+#### 4、创建状态机
 ```java
     StateMachine<PriceAdjustmentTaskStatusEnum, PriceAdjustmentTaskEventEnum, Context> stateMachine =
             builder.build("AdjustPriceTask");
 ```
 
-5、输出状态机图
+#### 5、输出状态机图
 ```java
 stateMachine.show(Visitor.PLANT_UML);
 ```
