@@ -2,6 +2,14 @@
 
 一款简单易用的轻量级状态机框架。基于COLA StateMachine实现。
 
+## 核心概念
+- State: 状态
+- Transition: 状态转移
+    - InitTransitionBuilder: 初始化状态转移。（null -> 初始化状态）
+    - ExternalTransitionBuilder: 外部状态转移。(非初始化状态 -> 目标状态)
+    - InternalTransitionBuilder: 内部状态转移。(非初始化状态 -> 非初始化状态)
+- EventStateMachine: 状态机
+
 ## 快速开始
 
 ### 入口代码
@@ -18,8 +26,7 @@ StateMachineBuilderFactory.declare();
 
 ```java
        StateMachineBuilder<PriceAdjustmentTaskStatusEnum, PriceAdjustmentTaskEventEnum, Context> builder =
-    StateMachineBuilderFactory.<PriceAdjustmentTaskStatusEnum, PriceAdjustmentTaskEventEnum, Context>declare()
-        .start(None)
+    StateMachineBuilderFactory.<PriceAdjustmentTaskStatusEnum, PriceAdjustmentTaskEventEnum, Context>declare(PriceAdjustmentTaskStatusEnum.class)
         .end(Closed)
         .create();
 ```
