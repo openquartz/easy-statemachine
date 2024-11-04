@@ -11,7 +11,6 @@ import static com.openquartz.easystatemachine.StateMachinePlantUMLTest.PriceAdju
 import static com.openquartz.easystatemachine.StateMachinePlantUMLTest.PriceAdjustmentTaskEventEnum.Supplier_Reject;
 import static com.openquartz.easystatemachine.StateMachinePlantUMLTest.PriceAdjustmentTaskEventEnum.Supplier_Timeout;
 import static com.openquartz.easystatemachine.StateMachinePlantUMLTest.PriceAdjustmentTaskStatusEnum.Closed;
-import static com.openquartz.easystatemachine.StateMachinePlantUMLTest.PriceAdjustmentTaskStatusEnum.None;
 import static com.openquartz.easystatemachine.StateMachinePlantUMLTest.PriceAdjustmentTaskStatusEnum.Price_Manager_Processing;
 import static com.openquartz.easystatemachine.StateMachinePlantUMLTest.PriceAdjustmentTaskStatusEnum.Supplier_Manager_Processing;
 import static com.openquartz.easystatemachine.StateMachinePlantUMLTest.PriceAdjustmentTaskStatusEnum.Supplier_Processing;
@@ -33,7 +32,7 @@ public class StateMachinePlantUMLTest {
         /**
          * 开始状态
          */
-        None,
+//        None,
         /**
          * 待商家处理
          */
@@ -98,14 +97,14 @@ public class StateMachinePlantUMLTest {
     @Test
     public void testPlantUML() {
         StateMachineBuilder<PriceAdjustmentTaskStatusEnum, PriceAdjustmentTaskEventEnum, Context> builder =
-            StateMachineBuilderFactory.<PriceAdjustmentTaskStatusEnum, PriceAdjustmentTaskEventEnum, Context>declare()
-                .start(None)
+            StateMachineBuilderFactory.<PriceAdjustmentTaskStatusEnum, PriceAdjustmentTaskEventEnum, Context>declare(PriceAdjustmentTaskStatusEnum.class)
+//                .start(None)
                 .end(Closed)
                 .create();
 
-        builder.externalTransition()
-            .from(None)
-            .to(Supplier_Processing)
+        builder.initTransition()
+//            .from(None)
+            .init(Supplier_Processing)
             .on(Create)
             .when(checkCondition())
             .perform(doAction());
@@ -183,6 +182,9 @@ public class StateMachinePlantUMLTest {
             builder.build("AdjustPriceTask");
         String plantUmlStr = stateMachine.accept(Visitor.PLANT_UML);
         System.out.println(plantUmlStr);
+
+        PriceAdjustmentTaskStatusEnum targetStatus = stateMachine.startEvent(Create, new Context());
+        System.out.println(targetStatus);
     }
 
     private Condition<StateMachineTest.Context> checkCondition() {

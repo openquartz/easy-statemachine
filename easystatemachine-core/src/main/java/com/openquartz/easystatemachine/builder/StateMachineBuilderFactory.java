@@ -7,29 +7,23 @@ import java.util.concurrent.ConcurrentHashMap;
 
 /**
  * StateMachineBuilderFactory
+ * @author svnee
  */
 public class StateMachineBuilderFactory<S, E, C> {
 
-    private StateMachineBuilderFactory() {
+    private StateMachineBuilderFactory(Class<S> stateIdClass) {
+        this.stateIdClass = stateIdClass;
     }
 
-    /**
-     * start state
-     */
-    private S[] startStateIds;
+    private final Class<S> stateIdClass;
 
     /**
      * end state
      */
     private S[] endStateIds;
 
-    public static <S, E, C> StateMachineBuilderFactory<S, E, C> declare() {
-        return new StateMachineBuilderFactory<>();
-    }
-
-    public StateMachineBuilderFactory<S, E, C> start(S... startStateIds) {
-        this.startStateIds = startStateIds;
-        return this;
+    public static <S, E, C> StateMachineBuilderFactory<S, E, C> declare(Class<S> stateClass) {
+        return new StateMachineBuilderFactory<>(stateClass);
     }
 
     public StateMachineBuilderFactory<S, E, C> end(S... endStateIds) {
@@ -40,10 +34,7 @@ public class StateMachineBuilderFactory<S, E, C> {
     public StateMachineBuilder<S, E, C> create() {
 
         Map<S, State<S, E, C>> stateMap = new ConcurrentHashMap<>();
-        StateHelper.getStartStates(stateMap, startStateIds);
         StateHelper.getEndStates(stateMap, endStateIds);
-        return new StateMachineBuilderImpl<>(stateMap);
+        return new StateMachineBuilderImpl<>(stateMap, stateIdClass);
     }
-
-
 }

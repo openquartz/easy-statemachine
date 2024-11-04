@@ -4,6 +4,7 @@ package com.openquartz.easystatemachine.builder;
  * InternalTransitionBuilder
  */
 public interface InternalTransitionBuilder <S, E, C> {
+
     /**
      * Build a internal transition
      * @param stateId id of transition

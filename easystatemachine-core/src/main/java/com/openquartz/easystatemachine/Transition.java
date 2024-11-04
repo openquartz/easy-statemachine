@@ -10,14 +10,14 @@ import com.openquartz.easystatemachine.impl.TransitionType;
  * @param <E> the type of event
  * @param <C> the type of user defined context, which is used to hold application data
  */
-public interface Transition<S, E, C>{
+public interface Transition<S, E, C> {
 
     /**
      * Gets the source state of this transition.
      *
      * @return the source state
      */
-    State<S,E,C> getSource();
+    State<S, E, C> getSource();
 
     void setSource(State<S, E, C> state);
 
@@ -26,12 +26,13 @@ public interface Transition<S, E, C>{
     void setEvent(E event);
 
     void setType(TransitionType type);
+
     /**
      * Gets the target state of this transition.
      *
      * @return the target state
      */
-    State<S,E,C> getTarget();
+    State<S, E, C> getTarget();
 
     void setTarget(State<S, E, C> state);
 
@@ -44,7 +45,7 @@ public interface Transition<S, E, C>{
 
     void setCondition(Condition<C> condition);
 
-    Action<S,E,C> getAction();
+    Action<S, E, C> getAction();
 
     void setAction(Action<S, E, C> action);
 

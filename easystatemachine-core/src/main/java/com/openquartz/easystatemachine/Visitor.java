@@ -16,25 +16,21 @@ public interface Visitor {
 
     /**
      * @param visitable the element to be visited.
-     * @return
      */
     String visitOnEntry(StateMachine<?, ?, ?> visitable, List<State<?, ?, ?>> startStateList);
 
     /**
      * @param visitable the element to be visited.
-     * @return
      */
     String visitOnExit(StateMachine<?, ?, ?> visitable, List<State<?, ?, ?>> endStateList);
 
     /**
      * @param visitable the element to be visited.
-     * @return
      */
     String visitOnEntry(State<?, ?, ?> visitable);
 
     /**
      * @param visitable the element to be visited.
-     * @return
      */
     String visitOnExit(State<?, ?, ?> visitable);
 }

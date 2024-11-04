@@ -12,9 +12,9 @@ public enum TransitionType {
     INTERNAL,
 
     /**
-     * 意味着 Transition（如果触发）不会退出复合（源）State，但会退出并重新进入复合 State 中当前 state 配置中的任何状态。
+     * INIT Transaction
      */
-    LOCAL,
+    INIT,
 
     /**
      * 表示 Transition（如果触发）将退出复合（源）State。

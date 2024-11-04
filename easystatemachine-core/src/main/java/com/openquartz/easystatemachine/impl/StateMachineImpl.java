@@ -5,6 +5,8 @@ import com.openquartz.easystatemachine.StateMachine;
 import com.openquartz.easystatemachine.Transition;
 import com.openquartz.easystatemachine.Visitor;
 import com.openquartz.easystatemachine.builder.FailCallback;
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -21,12 +23,15 @@ public class StateMachineImpl<S, E, C> implements StateMachine<S, E, C> {
 
     private final Map<S, State<S, E, C>> stateMap;
 
+    private final Class<S> stateIdClass;
+
     private boolean ready;
 
     private FailCallback<S, E, C> failCallback;
 
-    public StateMachineImpl(Map<S, State<S, E, C>> stateMap) {
+    public StateMachineImpl(Map<S, State<S, E, C>> stateMap, Class<S> stateIdClass) {
         this.stateMap = stateMap;
+        this.stateIdClass = stateIdClass;
     }
 
     @Override
@@ -54,9 +59,44 @@ public class StateMachineImpl<S, E, C> implements StateMachine<S, E, C> {
         return transition.transit(ctx, false).getId();
     }
 
+    @Override
+    public List<S> fireParallelEvent(S sourceState, E event, C ctx) {
+        isReady();
+        List<Transition<S, E, C>> transitions = routeTransitions(sourceState, event, ctx);
+        List<S> result = new ArrayList<>();
+        if (transitions == null || transitions.isEmpty()) {
+            Debugger.debug("There is no Transition for " + event);
+            failCallback.onFail(sourceState, event, ctx);
+            result.add(sourceState);
+            return result;
+        }
+        for (Transition<S, E, C> transition : transitions) {
+            S id = transition.transit(ctx, false).getId();
+            result.add(id);
+        }
+        return result;
+    }
+
+    @Override
+    public S startEvent(E event, C ctx) {
+        isReady();
+        Transition<S, E, C> transition = routeInitTransition(event, ctx);
+
+        if (transition == null) {
+            Debugger.debug("There is no Transition for " + event);
+            failCallback.onFail(null, event, ctx);
+            return null;
+        }
+
+        return transition.transit(ctx, false).getId();
+    }
+
     private Transition<S, E, C> routeTransition(S sourceStateId, E event, C ctx) {
         State<S, E, C> sourceState = getState(sourceStateId);
+        return routeTransition(event, ctx, sourceState);
+    }
 
+    private static <S, E, C> Transition<S, E, C> routeTransition(E event, C ctx, State<S, E, C> sourceState) {
         List<Transition<S, E, C>> transitions = sourceState.getEventTransitions(event);
 
         if (transitions == null || transitions.isEmpty()) {
@@ -76,6 +116,33 @@ public class StateMachineImpl<S, E, C> implements StateMachine<S, E, C> {
         return transit;
     }
 
+    private Transition<S, E, C> routeInitTransition(E event, C ctx) {
+        State<S, E, C> sourceState = StateHelper.getSourceState(stateIdClass);
+        return routeTransition(event, ctx, sourceState);
+    }
+
+    private List<Transition<S, E, C>> routeTransitions(S sourceStateId, E event, C context) {
+
+        State<S, E, C> sourceState = getState(sourceStateId);
+        List<Transition<S, E, C>> result = new ArrayList<>();
+        List<Transition<S, E, C>> transitions = sourceState.getEventTransitions(event);
+        if (transitions == null || transitions.isEmpty()) {
+            return null;
+        }
+
+        for (Transition<S, E, C> transition : transitions) {
+            Transition<S, E, C> transit = null;
+            if (transition.getCondition() == null) {
+                transit = transition;
+            } else if (transition.getCondition().isSatisfied(context)) {
+                transit = transition;
+            }
+            result.add(transit);
+        }
+        return result;
+    }
+
+
     private State<S, E, C> getState(S currentStateId) {
         State<S, E, C> state = StateHelper.getState(stateMap, currentStateId);
         if (state == null) {
@@ -94,13 +161,10 @@ public class StateMachineImpl<S, E, C> implements StateMachine<S, E, C> {
     @Override
     public String accept(Visitor visitor) {
 
-        List<State<?, ?, ?>> startStateList = stateMap.values()
-            .stream()
-            .filter(e -> e instanceof StartStateImpl)
-            .collect(Collectors.toList());
+        State<S, E, C> sourceState = StateHelper.getSourceState(stateIdClass);
 
         StringBuilder sb = new StringBuilder();
-        sb.append(visitor.visitOnEntry(this, startStateList));
+        sb.append(visitor.visitOnEntry(this, Collections.singletonList(sourceState)));
 
         for (State<S, E, C> state : stateMap.values()) {
             sb.append(state.accept(visitor));

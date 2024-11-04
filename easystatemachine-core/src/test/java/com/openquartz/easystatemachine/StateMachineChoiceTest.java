@@ -33,7 +33,7 @@ public class StateMachineChoiceTest {
      */
     @Test
     public void testChoice() {
-        StateMachineBuilder<States, Events, Context> builder = StateMachineBuilderFactory.<States, Events, Context>declare()
+        StateMachineBuilder<States, Events, Context> builder = StateMachineBuilderFactory.<States, Events, Context>declare(States.class)
             .create();
         builder.internalTransition()
             .within(StateMachineTest.States.STATE1)

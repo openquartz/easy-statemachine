@@ -4,6 +4,7 @@ import com.openquartz.easystatemachine.Action;
 import com.openquartz.easystatemachine.Condition;
 import com.openquartz.easystatemachine.State;
 import com.openquartz.easystatemachine.Transition;
+import java.util.Objects;
 
 /**
  * TransitionImpl。
@@ -103,11 +104,9 @@ public class TransitionImpl<S, E, C> implements Transition<S, E, C> {
     public boolean equals(Object anObject) {
         if (anObject instanceof Transition) {
             Transition<?, ?, ?> other = (Transition<?, ?, ?>) anObject;
-            if (this.event.equals(other.getEvent())
-                && this.source.equals(other.getSource())
-                && this.target.equals(other.getTarget())) {
-                return true;
-            }
+            return Objects.equals(this.event, other.getEvent())
+                && Objects.equals(this.source, other.getSource())
+                && Objects.equals(this.target, other.getTarget());
         }
         return false;
     }
@@ -117,6 +116,12 @@ public class TransitionImpl<S, E, C> implements Transition<S, E, C> {
         if (type == TransitionType.INTERNAL && source != target) {
             throw new StateMachineException(String.format("Internal transition source state '%s' " +
                 "and target state '%s' must be same.", source, target));
+        }
+
+        if (type == TransitionType.INIT && !(source instanceof SourceStateImpl)) {
+            throw new StateMachineException(
+                String.format("Init transition source state '%s' must be %s.", source,
+                    SourceStateImpl.class.getName()));
         }
     }
 }

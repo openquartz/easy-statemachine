@@ -38,7 +38,7 @@ public class StateMachineTest {
     @Test
     public void testExternalNormal() {
         StateMachineBuilder<States, Events, Context> builder =
-            StateMachineBuilderFactory.<States, Events, Context>declare()
+            StateMachineBuilderFactory.<States, Events, Context>declare(States.class)
                 .create();
         builder.externalTransition()
             .from(States.STATE1)
@@ -54,7 +54,7 @@ public class StateMachineTest {
 
     @Test
     public void testFail() {
-        StateMachineBuilder<States, Events, Context> builder = StateMachineBuilderFactory.<States, Events, Context>declare()
+        StateMachineBuilder<States, Events, Context> builder = StateMachineBuilderFactory.<States, Events, Context>declare(States.class)
             .create();
         builder.externalTransition()
             .from(States.STATE1)
@@ -72,7 +72,7 @@ public class StateMachineTest {
 
     @Test
     public void testVerify() {
-        StateMachineBuilder<States, Events, Context> builder = StateMachineBuilderFactory.<States, Events, Context>declare()
+        StateMachineBuilder<States, Events, Context> builder = StateMachineBuilderFactory.<States, Events, Context>declare(States.class)
             .create();
         builder.externalTransition()
             .from(States.STATE1)
@@ -89,7 +89,7 @@ public class StateMachineTest {
 
     @Test
     public void testExternalTransitionsNormal() {
-        StateMachineBuilder<States, Events, Context> builder = StateMachineBuilderFactory.<States, Events, Context>declare().create();
+        StateMachineBuilder<States, Events, Context> builder = StateMachineBuilderFactory.<States, Events, Context>declare(States.class).create();
         builder.externalTransitions()
             .fromAmong(States.STATE1, States.STATE2, States.STATE3)
             .to(States.STATE4)
@@ -104,7 +104,7 @@ public class StateMachineTest {
 
     @Test
     public void testInternalNormal() {
-        StateMachineBuilder<States, Events, Context> builder = StateMachineBuilderFactory.<States, Events, Context>declare().create();
+        StateMachineBuilder<States, Events, Context> builder = StateMachineBuilderFactory.<States, Events, Context>declare(States.class).create();
         builder.internalTransition()
             .within(States.STATE1)
             .on(Events.INTERNAL_EVENT)
@@ -133,7 +133,7 @@ public class StateMachineTest {
     }
 
     private StateMachine<States, Events, Context> buildStateMachine(String machineId) {
-        StateMachineBuilder<States, Events, Context> builder = StateMachineBuilderFactory.<States, Events, Context>declare().create();
+        StateMachineBuilder<States, Events, Context> builder = StateMachineBuilderFactory.<States, Events, Context>declare(States.class).create();
         builder.externalTransition()
             .from(States.STATE1)
             .to(States.STATE2)

@@ -21,14 +21,14 @@ public class StateMachineBuilderImpl<S, E, C> implements StateMachineBuilder<S, 
     private final StateMachineImpl<S, E, C> stateMachine;
     private FailCallback<S, E, C> failCallback = new NumbFailCallback<>();
 
-    public StateMachineBuilderImpl(Map<S, State<S, E, C>> stateMap) {
+    public StateMachineBuilderImpl(Map<S, State<S, E, C>> stateMap, Class<S> stateClass) {
         if (Objects.nonNull(stateMap)) {
             this.stateMap = stateMap;
         } else {
             this.stateMap = new ConcurrentHashMap<>();
         }
 
-        this.stateMachine = new StateMachineImpl<>(this.stateMap);
+        this.stateMachine = new StateMachineImpl<>(this.stateMap, stateClass);
     }
 
     @Override
@@ -44,6 +44,11 @@ public class StateMachineBuilderImpl<S, E, C> implements StateMachineBuilder<S, 
     @Override
     public InternalTransitionBuilder<S, E, C> internalTransition() {
         return new TransitionBuilderImpl<>(stateMap, TransitionType.INTERNAL);
+    }
+
+    @Override
+    public InitTransitionBuilder<S, E, C> initTransition() {
+        return new TransitionBuilderImpl<>(stateMap, TransitionType.INIT);
     }
 
     @Override

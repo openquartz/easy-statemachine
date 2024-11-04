@@ -29,13 +29,23 @@ public interface StateMachineBuilder<S, E, C> {
     InternalTransitionBuilder<S, E, C> internalTransition();
 
     /**
+     * Start to build init transition
+     * @return Init transition builder
+     */
+    InitTransitionBuilder<S, E, C> initTransition();
+
+    /**
      * set up fail callback, default do nothing {@code NumbFailCallbackImpl}
      *
-     * @param callback
+     * @param callback callback
      */
     void setFailCallback(FailCallback<S, E, C> callback);
 
-
+    /**
+     * build state machine entry
+     * @param machineId machineId
+     * @return state machine
+     */
     StateMachine<S, E, C> build(String machineId);
 
 }

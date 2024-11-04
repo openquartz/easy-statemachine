@@ -5,6 +5,7 @@ import com.openquartz.easystatemachine.StateMachine;
 import com.openquartz.easystatemachine.Transition;
 import com.openquartz.easystatemachine.Visitor;
 import java.util.List;
+import java.util.Optional;
 
 /**
  * SysOutVisitor
@@ -28,7 +29,7 @@ public class SysOutVisitor implements Visitor {
     @Override
     public String visitOnEntry(State<?, ?, ?> state) {
         StringBuilder sb = new StringBuilder();
-        String stateStr = "State:" + state.getId();
+        String stateStr = "State:" + Optional.ofNullable(state.getId()).map(Object::toString).orElse("*");
         sb.append(stateStr).append(LF);
         System.out.println(stateStr);
         for (Transition<?, ?, ?> transition : state.getAllTransitions()) {

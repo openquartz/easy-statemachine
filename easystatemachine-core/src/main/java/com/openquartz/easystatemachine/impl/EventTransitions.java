@@ -33,8 +33,8 @@ public class EventTransitions<S, E, C> {
 
     /**
      * Per one source and target state, there is only one transition is allowed
-     * @param existingTransitions
-     * @param newTransition
+     * @param existingTransitions existingTransitions
+     * @param newTransition newTransition
      */
     private void verify(List<Transition<S, E, C>> existingTransitions, Transition<S, E, C> newTransition) {
         for (Transition<S, E, C> transition : existingTransitions) {
