@@ -42,6 +42,11 @@ public class StateMachineBuilderImpl<S, E, C> implements StateMachineBuilder<S, 
     }
 
     @Override
+    public ExternalParallelTransitionBuilder<S, E, C> externalParallelTransition() {
+        return new ParallelTransitionBuilderImpl<>(stateMap, TransitionType.EXTERNAL);
+    }
+
+    @Override
     public InternalTransitionBuilder<S, E, C> internalTransition() {
         return new TransitionBuilderImpl<>(stateMap, TransitionType.INTERNAL);
     }

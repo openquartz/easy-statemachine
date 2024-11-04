@@ -19,7 +19,7 @@ public class StateMachineUnNormalTest {
 
         StateMachineBuilder<StateMachineTest.States, StateMachineTest.Events, StateMachineTest.Context> builder =
             StateMachineBuilderFactory.<StateMachineTest.States, StateMachineTest.Events, StateMachineTest.Context>declare(StateMachineTest.States.class)
-                .start(States.STATE1)
+//                .start(States.STATE1)
                 .end(States.STATE2)
                 .create();
         builder.externalTransition()
@@ -41,7 +41,7 @@ public class StateMachineUnNormalTest {
     public void testDuplicatedTransition() {
         StateMachineBuilder<StateMachineTest.States, StateMachineTest.Events, StateMachineTest.Context> builder =
             StateMachineBuilderFactory.<StateMachineTest.States, StateMachineTest.Events, StateMachineTest.Context>declare(StateMachineTest.States.class)
-                .start(States.STATE1)
+//                .start(States.STATE1)
                 .end(States.STATE2)
                 .create();
         builder.externalTransition()

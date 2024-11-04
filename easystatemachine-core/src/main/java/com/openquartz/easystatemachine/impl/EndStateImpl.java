@@ -6,9 +6,9 @@ import com.openquartz.easystatemachine.Visitor;
 import java.util.Collection;
 import java.util.List;
 
-public class EndStateImpl<S,E,C> implements State<S,E,C> {
+public class EndStateImpl<S, E, C> implements State<S, E, C> {
 
-    private final State<S,E,C> state;
+    private final State<S, E, C> state;
 
     public EndStateImpl(State<S, E, C> state) {
         this.state = state;
@@ -22,6 +22,12 @@ public class EndStateImpl<S,E,C> implements State<S,E,C> {
     @Override
     public Transition<S, E, C> addTransition(E event, State<S, E, C> target, TransitionType transitionType) {
         return state.addTransition(event, target, transitionType);
+    }
+
+    @Override
+    public List<Transition<S, E, C>> addTransitions(E event, List<State<S, E, C>> targets,
+        TransitionType transitionType) {
+        return state.addTransitions(event, targets, transitionType);
     }
 
     @Override

@@ -12,8 +12,8 @@ import java.util.Map;
  * TransitionBuilderImpl
  */
 class TransitionBuilderImpl<S, E, C>
-    implements ExternalTransitionBuilder<S, E, C>, InternalTransitionBuilder<S, E, C>, InitTransitionBuilder<S, E, C>,
-    From<S, E, C>, On<S, E, C>, To<S, E, C> {
+    extends AbstractTransitionBuilder<S, E, C>
+    implements ExternalTransitionBuilder<S, E, C>, InternalTransitionBuilder<S, E, C>, InitTransitionBuilder<S, E, C> {
 
     final Map<S, State<S, E, C>> stateMap;
 
@@ -26,6 +26,7 @@ class TransitionBuilderImpl<S, E, C>
     final TransitionType transitionType;
 
     public TransitionBuilderImpl(Map<S, State<S, E, C>> stateMap, TransitionType transitionType) {
+        super(stateMap, transitionType);
         this.stateMap = stateMap;
         this.transitionType = transitionType;
     }
@@ -33,12 +34,6 @@ class TransitionBuilderImpl<S, E, C>
     @Override
     public From<S, E, C> from(S stateId) {
         source = StateHelper.getState(stateMap, stateId);
-        return this;
-    }
-
-    @Override
-    public To<S, E, C> to(S stateId) {
-        target = StateHelper.getState(stateMap, stateId);
         return this;
     }
 
