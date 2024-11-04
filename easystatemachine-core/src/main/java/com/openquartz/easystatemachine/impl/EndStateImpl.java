@@ -5,6 +5,7 @@ import com.openquartz.easystatemachine.Transition;
 import com.openquartz.easystatemachine.Visitor;
 import java.util.Collection;
 import java.util.List;
+import java.util.Optional;
 
 public class EndStateImpl<S, E, C> implements State<S, E, C> {
 
@@ -43,5 +44,10 @@ public class EndStateImpl<S, E, C> implements State<S, E, C> {
     @Override
     public String accept(Visitor visitor) {
         return state.accept(visitor);
+    }
+
+    @Override
+    public String toString() {
+        return Optional.ofNullable(getId()).map(Object::toString).orElse("*");
     }
 }

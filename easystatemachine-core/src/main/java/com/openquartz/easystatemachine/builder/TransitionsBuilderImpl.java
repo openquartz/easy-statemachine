@@ -13,9 +13,9 @@ import java.util.Map;
 /**
  * TransitionsBuilderImpl
  */
-public class TransitionsBuilderImpl<S,E,C>
-    extends AbstractTransitionBuilder<S,E,C>
-    implements ExternalTransitionsBuilder<S,E,C> {
+public class TransitionsBuilderImpl<S, E, C>
+    implements ExternalTransitionsBuilder<S, E, C>, From<S, E, C>, On<S, E, C>, To<S, E, C> {
+
     /**
      * This is for fromAmong where multiple sources can be configured to point to one target
      */
@@ -23,22 +23,35 @@ public class TransitionsBuilderImpl<S,E,C>
 
     private final List<Transition<S, E, C>> transitions = new ArrayList<>();
 
+    final Map<S, State<S, E, C>> stateMap;
+
+    final TransitionType transitionType;
+
+    protected State<S, E, C> target;
+
     public TransitionsBuilderImpl(Map<S, State<S, E, C>> stateMap, TransitionType transitionType) {
-        super(stateMap, transitionType);
+        this.stateMap = stateMap;
+        this.transitionType = transitionType;
     }
 
     @Override
     public From<S, E, C> fromAmong(S... stateIds) {
         for (S stateId : stateIds) {
-            sources.add(StateHelper.getState(super.stateMap, stateId));
+            sources.add(StateHelper.getState(stateMap, stateId));
         }
+        return this;
+    }
+
+    @Override
+    public To<S, E, C> to(S stateId) {
+        target = StateHelper.getState(stateMap, stateId);
         return this;
     }
 
     @Override
     public On<S, E, C> on(E event) {
         for (State<S, E, C> source : sources) {
-            Transition<S, E, C> transition = source.addTransition(event, super.target, super.transitionType);
+            Transition<S, E, C> transition = source.addTransition(event, target, transitionType);
             transitions.add(transition);
         }
         return this;
