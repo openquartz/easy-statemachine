@@ -19,7 +19,7 @@
 #### 1、声明
 
 ```java
-StateMachineBuilderFactory.declare();
+StateMachineBuilderFactory.declare(PriceAdjustmentTaskStatusEnum.class);
 ```
 
 #### 2、指定开始状态与结束状态
@@ -153,4 +153,8 @@ Closed --> [*]
 #### 6、触发状态机
 ```java
  stateMachine.fireEvent(None, Normal_Update, new Context());
+```
+触发开始初始化的状态机
+```java
+ stateMachine.startEvent(None, Normal_Update, new Context());
 ```
