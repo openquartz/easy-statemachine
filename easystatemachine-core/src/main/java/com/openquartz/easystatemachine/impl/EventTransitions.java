@@ -10,6 +10,7 @@ import java.util.Map;
  * EventTransitions
  *
  * 同一个Event可以触发多个Transitions
+ * @author svnee
  */
 public class EventTransitions<S, E, C> {
 

@@ -21,7 +21,7 @@ public class StateMachineTest {
         STATE4
     }
 
-    static enum Events {
+    enum Events {
         EVENT1,
         EVENT2,
         EVENT3,
@@ -37,9 +37,10 @@ public class StateMachineTest {
 
     @Test
     public void testExternalNormal() {
+
         StateMachineBuilder<States, Events, Context> builder =
-            StateMachineBuilderFactory.<States, Events, Context>declare(States.class)
-                .create();
+            StateMachineBuilderFactory.<States, Events, Context>declare(States.class).create();
+
         builder.externalTransition()
             .from(States.STATE1)
             .to(States.STATE2)
@@ -54,8 +55,10 @@ public class StateMachineTest {
 
     @Test
     public void testFail() {
-        StateMachineBuilder<States, Events, Context> builder = StateMachineBuilderFactory.<States, Events, Context>declare(States.class)
-            .create();
+
+        StateMachineBuilder<States, Events, Context> builder =
+            StateMachineBuilderFactory.<States, Events, Context>declare(States.class).create();
+
         builder.externalTransition()
             .from(States.STATE1)
             .to(States.STATE2)
@@ -72,8 +75,9 @@ public class StateMachineTest {
 
     @Test
     public void testVerify() {
-        StateMachineBuilder<States, Events, Context> builder = StateMachineBuilderFactory.<States, Events, Context>declare(States.class)
-            .create();
+
+        StateMachineBuilder<States, Events, Context> builder =
+            StateMachineBuilderFactory.<States, Events, Context>declare(States.class).create();
         builder.externalTransition()
             .from(States.STATE1)
             .to(States.STATE2)
@@ -89,8 +93,12 @@ public class StateMachineTest {
 
     @Test
     public void testExternalTransitionsNormal() {
-        StateMachineBuilder<States, Events, Context> builder = StateMachineBuilderFactory.<States, Events, Context>declare(States.class).create();
-        builder.externalTransitions()
+
+        StateMachineBuilder<States, Events, Context> builder =
+            StateMachineBuilderFactory.<States, Events, Context>declare(States.class).create();
+
+        builder
+            .externalTransitions()
             .fromAmong(States.STATE1, States.STATE2, States.STATE3)
             .to(States.STATE4)
             .on(Events.EVENT1)
@@ -104,7 +112,9 @@ public class StateMachineTest {
 
     @Test
     public void testInternalNormal() {
-        StateMachineBuilder<States, Events, Context> builder = StateMachineBuilderFactory.<States, Events, Context>declare(States.class).create();
+
+        StateMachineBuilder<States, Events, Context> builder =
+            StateMachineBuilderFactory.<States, Events, Context>declare(States.class).create();
         builder.internalTransition()
             .within(States.STATE1)
             .on(Events.INTERNAL_EVENT)
@@ -133,7 +143,10 @@ public class StateMachineTest {
     }
 
     private StateMachine<States, Events, Context> buildStateMachine(String machineId) {
-        StateMachineBuilder<States, Events, Context> builder = StateMachineBuilderFactory.<States, Events, Context>declare(States.class).create();
+
+        StateMachineBuilder<States, Events, Context> builder =
+            StateMachineBuilderFactory.<States, Events, Context>declare(States.class).create();
+
         builder.externalTransition()
             .from(States.STATE1)
             .to(States.STATE2)
@@ -177,6 +190,7 @@ public class StateMachineTest {
 
     @Test
     public void testMultiThread() {
+
         buildStateMachine("testMultiThread");
 
         for (int i = 0; i < 10; i++) {
@@ -216,10 +230,8 @@ public class StateMachineTest {
     }
 
     private Action<States, Events, Context> doAction() {
-        return (from, to, event, ctx) -> {
-            System.out.println(
-                ctx.operator + " is operating " + ctx.entityId + " from:" + from + " to:" + to + " on:" + event);
-        };
+        return (from, to, event, ctx) -> System.out.println(
+            ctx.operator + " is operating " + ctx.entityId + " from:" + from + " to:" + to + " on:" + event);
     }
 
 }

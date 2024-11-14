@@ -10,6 +10,7 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
+import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
 
 /**
@@ -19,14 +20,17 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 public class StateMachineImpl<S, E, C> implements StateMachine<S, E, C> {
 
+    @Setter
     private String machineId;
 
     private final Map<S, State<S, E, C>> stateMap;
 
     private final Class<S> stateIdClass;
 
+    @Setter
     private boolean ready;
 
+    @Setter
     private FailCallback<S, E, C> failCallback;
 
     public StateMachineImpl(Map<S, State<S, E, C>> stateMap, Class<S> stateIdClass) {
@@ -43,6 +47,20 @@ public class StateMachineImpl<S, E, C> implements StateMachine<S, E, C> {
         List<Transition<S, E, C>> transitions = sourceState.getEventTransitions(event);
 
         return transitions != null && !transitions.isEmpty();
+    }
+
+    @Override
+    public S fireEvent(E event, C ctx) {
+        isReady();
+        Transition<S, E, C> transition = routeInitTransition(event, ctx);
+
+        if (transition == null) {
+            Debugger.debug("There is no Transition for " + event);
+            failCallback.onFail(null, event, ctx);
+            return null;
+        }
+
+        return transition.transit(ctx, false).getId();
     }
 
     @Override
@@ -75,20 +93,6 @@ public class StateMachineImpl<S, E, C> implements StateMachine<S, E, C> {
             result.add(id);
         }
         return result;
-    }
-
-    @Override
-    public S startEvent(E event, C ctx) {
-        isReady();
-        Transition<S, E, C> transition = routeInitTransition(event, ctx);
-
-        if (transition == null) {
-            Debugger.debug("There is no Transition for " + event);
-            failCallback.onFail(null, event, ctx);
-            return null;
-        }
-
-        return transition.transit(ctx, false).getId();
     }
 
     private Transition<S, E, C> routeTransition(S sourceStateId, E event, C ctx) {
@@ -191,15 +195,4 @@ public class StateMachineImpl<S, E, C> implements StateMachine<S, E, C> {
         return machineId;
     }
 
-    public void setMachineId(String machineId) {
-        this.machineId = machineId;
-    }
-
-    public void setReady(boolean ready) {
-        this.ready = ready;
-    }
-
-    public void setFailCallback(FailCallback<S, E, C> failCallback) {
-        this.failCallback = failCallback;
-    }
 }

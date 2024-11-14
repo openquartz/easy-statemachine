@@ -21,8 +21,8 @@ public class StateHelper {
 
     @SuppressWarnings("unchecked")
     public static <S, E, C> State<S, E, C> getSourceState(Class<?> stateIdClass) {
-        return  (SourceStateImpl<S, E, C>) SOURCE_STATE_MAP.computeIfAbsent(
-            stateIdClass, k -> new SourceStateImpl<>(stateIdClass));
+        return (SourceStateImpl<S, E, C>) SOURCE_STATE_MAP.computeIfAbsent(stateIdClass,
+            k -> new SourceStateImpl<>(stateIdClass));
     }
 
     public static <S, E, C> List<State<S, E, C>> getStates(Map<S, State<S, E, C>> stateMap, S... stateId) {

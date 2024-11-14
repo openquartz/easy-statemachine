@@ -9,7 +9,6 @@ import org.junit.Assert;
 import org.junit.Test;
 
 /**
- * @author dingchenchen
  * @since 2021/1/6
  */
 public class StateMachineChoiceTest {
@@ -33,8 +32,11 @@ public class StateMachineChoiceTest {
      */
     @Test
     public void testChoice() {
-        StateMachineBuilder<States, Events, Context> builder = StateMachineBuilderFactory.<States, Events, Context>declare(States.class)
-            .create();
+
+        StateMachineBuilderFactory<States, Events, Context> builderFactory =
+            StateMachineBuilderFactory.declare(States.class);
+        StateMachineBuilder<States, Events, Context> builder = builderFactory.create();
+
         builder.internalTransition()
             .within(StateMachineTest.States.STATE1)
             .on(StateMachineTest.Events.EVENT1)
@@ -79,8 +81,6 @@ public class StateMachineChoiceTest {
     }
 
     private Action<StateMachineTest.States, StateMachineTest.Events, Context> doAction() {
-        return (from, to, event, ctx) -> {
-            System.out.println("from:" + from + " to:" + to + " on:" + event + " condition:" + ctx.getCondition());
-        };
+        return (from, to, event, ctx) -> System.out.println("from:" + from + " to:" + to + " on:" + event + " condition:" + ctx.getCondition());
     }
 }

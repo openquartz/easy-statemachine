@@ -20,6 +20,14 @@ public interface StateMachine<S, E, C> extends Visitable {
     boolean verify(S sourceStateId, E event);
 
     /**
+     * Start an event {@code E} to the state machine.
+     * @param event start event
+     * @param ctx ctx
+     * @return the target state
+     */
+    S fireEvent(E event, C ctx);
+
+    /**
      * Send an event {@code E} to the state machine.
      *
      * @param sourceState the source state
@@ -37,14 +45,6 @@ public interface StateMachine<S, E, C> extends Visitable {
      * @return the target state list
      */
     List<S> fireParallelEvent(S sourceState, E event, C ctx);
-
-    /**
-     * Start an event {@code E} to the state machine.
-     * @param event start event
-     * @param ctx ctx
-     * @return the target state
-     */
-    S startEvent(E event, C ctx);
 
     /**
      * MachineId is the identifier for a State Machine

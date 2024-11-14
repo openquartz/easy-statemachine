@@ -17,11 +17,12 @@ public class StateMachineUnNormalTest {
     @Test
     public void testConditionNotMeet() {
 
+        StateMachineBuilderFactory<States, Events, Context> builderFactory =
+            StateMachineBuilderFactory.declare(States.class);
+
         StateMachineBuilder<StateMachineTest.States, StateMachineTest.Events, StateMachineTest.Context> builder =
-            StateMachineBuilderFactory.<StateMachineTest.States, StateMachineTest.Events, StateMachineTest.Context>declare(StateMachineTest.States.class)
-//                .start(States.STATE1)
-                .end(States.STATE2)
-                .create();
+            builderFactory.end(States.STATE2).create();
+
         builder.externalTransition()
             .from(StateMachineTest.States.STATE1)
             .to(StateMachineTest.States.STATE2)
@@ -29,8 +30,8 @@ public class StateMachineUnNormalTest {
             .when(checkConditionFalse())
             .perform(doAction());
 
-        StateMachine<StateMachineTest.States, StateMachineTest.Events, StateMachineTest.Context> stateMachine = builder.build(
-            "NotMeetConditionMachine");
+        StateMachine<StateMachineTest.States, StateMachineTest.Events, StateMachineTest.Context> stateMachine =
+            builder.build("NotMeetConditionMachine");
         StateMachineTest.States target = stateMachine.fireEvent(StateMachineTest.States.STATE1,
             StateMachineTest.Events.EVENT1, new StateMachineTest.Context());
         Assert.assertEquals(StateMachineTest.States.STATE1, target);
@@ -39,11 +40,12 @@ public class StateMachineUnNormalTest {
 
     @Test(expected = StateMachineException.class)
     public void testDuplicatedTransition() {
+
+        StateMachineBuilderFactory<States, Events, Context> builderFactory =
+            StateMachineBuilderFactory.declare(States.class);
         StateMachineBuilder<StateMachineTest.States, StateMachineTest.Events, StateMachineTest.Context> builder =
-            StateMachineBuilderFactory.<StateMachineTest.States, StateMachineTest.Events, StateMachineTest.Context>declare(StateMachineTest.States.class)
-//                .start(States.STATE1)
-                .end(States.STATE2)
-                .create();
+            builderFactory.end(States.STATE2).create();
+
         builder.externalTransition()
             .from(StateMachineTest.States.STATE1)
             .to(StateMachineTest.States.STATE2)
@@ -62,9 +64,10 @@ public class StateMachineUnNormalTest {
     @Test(expected = StateMachineException.class)
     public void testDuplicateMachine() {
 
-        StateMachineBuilder<States, Events, Context> builder =
-            StateMachineBuilderFactory.<States, Events, Context>declare(StateMachineTest.States.class)
-            .create();
+        StateMachineBuilderFactory<States, Events, Context> builderFactory =
+            StateMachineBuilderFactory.declare(States.class);
+
+        StateMachineBuilder<States, Events, Context> builder = builderFactory.create();
 
         builder.externalTransition()
             .from(StateMachineTest.States.STATE1)
@@ -86,7 +89,6 @@ public class StateMachineUnNormalTest {
     }
 
     private Action<StateMachineTest.States, StateMachineTest.Events, StateMachineTest.Context> doAction() {
-        return (from, to, event, ctx) -> System.out.println(
-            ctx.operator + " is operating " + ctx.entityId + "from:" + from + " to:" + to + " on:" + event);
+        return (from, to, event, ctx) -> System.out.println(ctx.operator + " is operating " + ctx.entityId + "from:" + from + " to:" + to + " on:" + event);
     }
 }

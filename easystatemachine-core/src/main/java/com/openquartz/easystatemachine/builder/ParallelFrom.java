@@ -2,6 +2,7 @@ package com.openquartz.easystatemachine.builder;
 
 
 public interface ParallelFrom<S, E, C> {
+
     /**
      * Build transition target state and return to clause builder
      * @param stateIds id of state

@@ -13,7 +13,6 @@ class ParallelTransitionBuilderImpl<S, E, C>
     extends AbstractParallelTransitionBuilder<S, E, C>
     implements ExternalParallelTransitionBuilder<S, E, C> {
 
-
     private State<S, E, C> source;
     private List<Transition<S, E, C>> transitions;
 

@@ -30,10 +30,6 @@ public class StateMachinePlantUMLTest {
 
     enum PriceAdjustmentTaskStatusEnum {
         /**
-         * 开始状态
-         */
-//        None,
-        /**
          * 待商家处理
          */
         Supplier_Processing,
@@ -98,12 +94,10 @@ public class StateMachinePlantUMLTest {
     public void testPlantUML() {
         StateMachineBuilder<PriceAdjustmentTaskStatusEnum, PriceAdjustmentTaskEventEnum, Context> builder =
             StateMachineBuilderFactory.<PriceAdjustmentTaskStatusEnum, PriceAdjustmentTaskEventEnum, Context>declare(PriceAdjustmentTaskStatusEnum.class)
-//                .start(None)
                 .end(Closed)
                 .create();
 
         builder.initTransition()
-//            .from(None)
             .init(Supplier_Processing)
             .on(Create)
             .when(checkCondition())
@@ -183,7 +177,7 @@ public class StateMachinePlantUMLTest {
         String plantUmlStr = stateMachine.accept(Visitor.PLANT_UML);
         System.out.println(plantUmlStr);
 
-        PriceAdjustmentTaskStatusEnum targetStatus = stateMachine.startEvent(Create, new Context());
+        PriceAdjustmentTaskStatusEnum targetStatus = stateMachine.fireEvent(Create, new Context());
         System.out.println(targetStatus);
     }
 
@@ -192,7 +186,6 @@ public class StateMachinePlantUMLTest {
     }
 
     private Action<PriceAdjustmentTaskStatusEnum, PriceAdjustmentTaskEventEnum, StateMachineTest.Context> doAction() {
-        return (from, to, event, ctx) -> System.out.println(
-            ctx.operator + " is operating " + ctx.entityId + " from:" + from + " to:" + to + " on:" + event);
+        return (from, to, event, ctx) -> System.out.println(ctx.operator + " is operating " + ctx.entityId + " from:" + from + " to:" + to + " on:" + event);
     }
 }
