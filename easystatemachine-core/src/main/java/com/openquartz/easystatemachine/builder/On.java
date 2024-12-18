@@ -1,15 +1,16 @@
 package com.openquartz.easystatemachine.builder;
 
-import com.openquartz.easystatemachine.Condition;
+import com.openquartz.easystatemachine.Guard;
 
 /**
  * On
  */
 public interface On<S, E, C> extends When<S, E, C>{
+
     /**
-     * Add condition for the transition
-     * @param condition transition condition
+     * Add guard for the transition
+     * @param guard transition condition
      * @return When clause builder
      */
-    When<S, E, C> when(Condition<C> condition);
+    When<S, E, C> when(Guard<C> guard);
 }

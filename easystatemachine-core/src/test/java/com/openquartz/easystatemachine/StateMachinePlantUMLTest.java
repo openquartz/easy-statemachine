@@ -181,7 +181,7 @@ public class StateMachinePlantUMLTest {
         System.out.println(targetStatus);
     }
 
-    private Condition<StateMachineTest.Context> checkCondition() {
+    private Guard<Context> checkCondition() {
         return (ctx) -> true;
     }
 

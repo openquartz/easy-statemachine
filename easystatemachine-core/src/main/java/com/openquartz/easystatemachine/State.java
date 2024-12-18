@@ -27,10 +27,26 @@ public interface State<S, E, C> extends Visitable {
      */
     Transition<S,E,C> addTransition(E event, State<S, E, C> target, TransitionType transitionType);
 
+    /**
+     * add transitions to the state
+     * @param event event
+     * @param targets target states
+     * @param transitionType transition type
+     * @return transitions
+     */
     List<Transition<S,E,C>> addTransitions(E event, List<State<S, E, C>> targets, TransitionType transitionType);
 
+    /**
+     * get transitions by event
+     * @param event event
+     * @return transitions
+     */
     List<Transition<S,E,C>> getEventTransitions(E event);
 
+    /**
+     * get all transitions
+     * @return transitions
+     */
     Collection<Transition<S,E,C>> getAllTransitions();
 
 }

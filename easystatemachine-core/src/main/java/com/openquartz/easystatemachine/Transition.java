@@ -41,9 +41,9 @@ public interface Transition<S, E, C> {
      *
      * @return the guard
      */
-    Condition<C> getCondition();
+    Guard<C> getGuard();
 
-    void setCondition(Condition<C> condition);
+    void setGuard(Guard<C> guard);
 
     Action<S, E, C> getAction();
 

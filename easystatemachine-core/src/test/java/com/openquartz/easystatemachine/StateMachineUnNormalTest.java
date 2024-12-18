@@ -80,11 +80,11 @@ public class StateMachineUnNormalTest {
         builder.build("DuplicatedMachine");
     }
 
-    private Condition<StateMachineTest.Context> checkCondition() {
+    private Guard<Context> checkCondition() {
         return (ctx) -> true;
     }
 
-    private Condition<StateMachineTest.Context> checkConditionFalse() {
+    private Guard<Context> checkConditionFalse() {
         return (ctx) -> false;
     }
 

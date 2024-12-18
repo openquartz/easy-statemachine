@@ -68,15 +68,15 @@ public class StateMachineChoiceTest {
         Assert.assertEquals(StateMachineTest.States.STATE3, target3);
     }
 
-    private Condition<Context> checkCondition1() {
+    private Guard<Context> checkCondition1() {
         return (ctx) -> "1".equals(ctx.getCondition());
     }
 
-    private Condition<Context> checkCondition2() {
+    private Guard<Context> checkCondition2() {
         return (ctx) -> "2".equals(ctx.getCondition());
     }
 
-    private Condition<Context> checkCondition3() {
+    private Guard<Context> checkCondition3() {
         return (ctx) -> "3".equals(ctx.getCondition());
     }
 

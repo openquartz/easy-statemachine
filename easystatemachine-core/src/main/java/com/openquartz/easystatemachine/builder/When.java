@@ -6,6 +6,7 @@ import com.openquartz.easystatemachine.Action;
  * When
  */
 public interface When<S, E, C>{
+
     /**
      * Define action to be performed during transition
      *

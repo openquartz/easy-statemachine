@@ -8,7 +8,7 @@ import static com.openquartz.easystatemachine.exmaple.model.OrderStatusEnum.REFU
 import static com.openquartz.easystatemachine.exmaple.model.OrderStatusEnum.UNPAID;
 
 import com.openquartz.easystatemachine.Action;
-import com.openquartz.easystatemachine.Condition;
+import com.openquartz.easystatemachine.Guard;
 import com.openquartz.easystatemachine.StateMachine;
 import com.openquartz.easystatemachine.builder.AlertFailCallback;
 import com.openquartz.easystatemachine.builder.StateMachineBuilder;
@@ -96,11 +96,11 @@ public class OrderStatemachineConfig {
             log.info("[OrderStatemachineConfig#doRefund] state:{}->{},event:{},context:{}", from, to, event, context);
     }
 
-    private Condition<OrderStateContext> checkRefundCondition() {
+    private Guard<OrderStateContext> checkRefundCondition() {
         return (ctx) -> true;
     }
 
-    private Condition<OrderStateContext> checkCancelCondition() {
+    private Guard<OrderStateContext> checkCancelCondition() {
         return (ctx) -> true;
     }
 
@@ -114,7 +114,7 @@ public class OrderStatemachineConfig {
             log.info("[OrderStatemachineConfig#doFinish] state:{}->{},event:{},context:{}", from, to, event, context);
     }
 
-    private Condition<OrderStateContext> checkFinishCondition() {
+    private Guard<OrderStateContext> checkFinishCondition() {
         return (ctx) -> true;
     }
 
@@ -123,7 +123,7 @@ public class OrderStatemachineConfig {
             log.info("[OrderStatemachineConfig#doDeliver] state:{}->{},event:{},context:{}", from, to, event, context);
     }
 
-    private Condition<OrderStateContext> checkDeliverCondition() {
+    private Guard<OrderStateContext> checkDeliverCondition() {
         return (ctx) -> true;
     }
 
@@ -132,11 +132,11 @@ public class OrderStatemachineConfig {
             log.info("[OrderStatemachineConfig#doPay] state:{}->{},event:{},context:{}", from, to, event, context);
     }
 
-    private Condition<OrderStateContext> checkPaidCondition() {
+    private Guard<OrderStateContext> checkPaidCondition() {
         return (ctx) -> true;
     }
 
-    private Condition<OrderStateContext> checkCreateCondition() {
+    private Guard<OrderStateContext> checkCreateCondition() {
         return (ctx) -> true;
     }
 

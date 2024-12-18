@@ -1,7 +1,7 @@
 package com.openquartz.easystatemachine.builder;
 
 import com.openquartz.easystatemachine.Action;
-import com.openquartz.easystatemachine.Condition;
+import com.openquartz.easystatemachine.Guard;
 import com.openquartz.easystatemachine.State;
 import com.openquartz.easystatemachine.Transition;
 import com.openquartz.easystatemachine.impl.StateHelper;
@@ -56,8 +56,8 @@ class TransitionBuilderImpl<S, E, C>
     }
 
     @Override
-    public When<S, E, C> when(Condition<C> condition) {
-        transition.setCondition(condition);
+    public When<S, E, C> when(Guard<C> guard) {
+        transition.setGuard(guard);
         return this;
     }
 

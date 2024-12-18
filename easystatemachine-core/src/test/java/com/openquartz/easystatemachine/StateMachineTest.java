@@ -222,7 +222,7 @@ public class StateMachineTest {
 
     }
 
-    private Condition<Context> checkCondition() {
+    private Guard<Context> checkCondition() {
         return context -> {
             System.out.println("Check condition : " + context);
             return true;

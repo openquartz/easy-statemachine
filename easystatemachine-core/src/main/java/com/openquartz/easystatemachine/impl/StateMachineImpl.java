@@ -101,6 +101,7 @@ public class StateMachineImpl<S, E, C> implements StateMachine<S, E, C> {
     }
 
     private static <S, E, C> Transition<S, E, C> routeTransition(E event, C ctx, State<S, E, C> sourceState) {
+
         List<Transition<S, E, C>> transitions = sourceState.getEventTransitions(event);
 
         if (transitions == null || transitions.isEmpty()) {
@@ -109,9 +110,9 @@ public class StateMachineImpl<S, E, C> implements StateMachine<S, E, C> {
 
         Transition<S, E, C> transit = null;
         for (Transition<S, E, C> transition : transitions) {
-            if (transition.getCondition() == null) {
+            if (transition.getGuard() == null) {
                 transit = transition;
-            } else if (transition.getCondition().isSatisfied(ctx)) {
+            } else if (transition.getGuard().isSatisfied(ctx)) {
                 transit = transition;
                 break;
             }
@@ -136,9 +137,9 @@ public class StateMachineImpl<S, E, C> implements StateMachine<S, E, C> {
 
         for (Transition<S, E, C> transition : transitions) {
             Transition<S, E, C> transit = null;
-            if (transition.getCondition() == null) {
+            if (transition.getGuard() == null) {
                 transit = transition;
-            } else if (transition.getCondition().isSatisfied(context)) {
+            } else if (transition.getGuard().isSatisfied(context)) {
                 transit = transition;
             }
             result.add(transit);

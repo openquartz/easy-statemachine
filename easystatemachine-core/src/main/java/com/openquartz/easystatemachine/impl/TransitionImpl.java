@@ -1,7 +1,7 @@
 package com.openquartz.easystatemachine.impl;
 
 import com.openquartz.easystatemachine.Action;
-import com.openquartz.easystatemachine.Condition;
+import com.openquartz.easystatemachine.Guard;
 import com.openquartz.easystatemachine.State;
 import com.openquartz.easystatemachine.Transition;
 import java.util.Objects;
@@ -19,7 +19,7 @@ public class TransitionImpl<S, E, C> implements Transition<S, E, C> {
 
     private E event;
 
-    private Condition<C> condition;
+    private Guard<C> guard;
 
     private Action<S, E, C> action;
 
@@ -61,13 +61,13 @@ public class TransitionImpl<S, E, C> implements Transition<S, E, C> {
     }
 
     @Override
-    public Condition<C> getCondition() {
-        return this.condition;
+    public Guard<C> getGuard() {
+        return this.guard;
     }
 
     @Override
-    public void setCondition(Condition<C> condition) {
-        this.condition = condition;
+    public void setGuard(Guard<C> guard) {
+        this.guard = guard;
     }
 
     @Override
@@ -84,7 +84,7 @@ public class TransitionImpl<S, E, C> implements Transition<S, E, C> {
     public State<S, E, C> transit(C ctx, boolean checkCondition) {
         Debugger.debug("Do transition: " + this);
         this.verify();
-        if (!checkCondition || condition == null || condition.isSatisfied(ctx)) {
+        if (!checkCondition || guard == null || guard.isSatisfied(ctx)) {
             if (action != null) {
                 action.execute(source.getId(), target.getId(), event, ctx);
             }

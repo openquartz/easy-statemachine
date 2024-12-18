@@ -3,7 +3,7 @@ package com.openquartz.easystatemachine;
 /**
  * Condition
  */
-public interface Condition<C> {
+public interface Guard<C> {
 
     /**
      * @param context context object
