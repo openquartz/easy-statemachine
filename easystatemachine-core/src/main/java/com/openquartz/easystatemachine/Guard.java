@@ -1,11 +1,13 @@
 package com.openquartz.easystatemachine;
 
 /**
- * Condition
+ * Guard
  */
 public interface Guard<C> {
 
     /**
+     * Check whether the context satisfied current condition
+     * satisfied condition will transit to next state.
      * @param context context object
      * @return whether the context satisfied current condition
      */
