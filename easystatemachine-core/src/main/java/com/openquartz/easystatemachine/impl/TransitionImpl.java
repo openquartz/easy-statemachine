@@ -1,9 +1,11 @@
 package com.openquartz.easystatemachine.impl;
 
 import com.openquartz.easystatemachine.Action;
+import com.openquartz.easystatemachine.ActionInterceptor;
 import com.openquartz.easystatemachine.Guard;
 import com.openquartz.easystatemachine.State;
 import com.openquartz.easystatemachine.Transition;
+import java.util.Comparator;
 import java.util.Objects;
 
 /**
@@ -86,7 +88,25 @@ public class TransitionImpl<S, E, C> implements Transition<S, E, C> {
         this.verify();
         if (!checkCondition || guard == null || guard.isSatisfied(ctx)) {
             if (action != null) {
-                action.execute(source.getId(), target.getId(), event, ctx);
+
+                // 按照ActionInterceptor中的order()方法的顺序执行所有的ActionInterceptor
+                ActionInterceptorFactory.getInterceptorList().stream()
+                    .sorted(Comparator.comparingInt(ActionInterceptor::order))
+                    .forEach(interceptor -> interceptor.beforeIntercept(source.getId(), target.getId(), event, ctx));
+
+                Exception executeEx = null;
+                try {
+                    action.execute(source.getId(), target.getId(), event, ctx);
+                } catch (Exception ex) {
+                    executeEx = ex;
+                }
+
+                // 按照ActionInterceptor中的order()方法的倒序执行所有的ActionInterceptor
+                Exception finalEx = executeEx;
+                ActionInterceptorFactory.getInterceptorList().stream()
+                    .sorted(Comparator.comparingInt(ActionInterceptor::order).reversed())
+                    .forEach(
+                        interceptor -> interceptor.afterComplete(source.getId(), target.getId(), event, ctx, finalEx));
             }
             return target;
         }
