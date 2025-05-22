@@ -90,7 +90,7 @@ public class TransitionImpl<S, E, C> implements Transition<S, E, C> {
             if (action != null) {
 
                 // 按照ActionInterceptor中的order()方法的顺序执行所有的ActionInterceptor
-                ActionInterceptorFactory.getInterceptorList().stream()
+                ActionInterceptorFactory.getInterceptorSet().stream()
                     .sorted(Comparator.comparingInt(ActionInterceptor::order))
                     .forEach(interceptor -> interceptor.beforeIntercept(source.getId(), target.getId(), event, ctx));
 
@@ -103,7 +103,7 @@ public class TransitionImpl<S, E, C> implements Transition<S, E, C> {
 
                 // 按照ActionInterceptor中的order()方法的倒序执行所有的ActionInterceptor
                 Exception finalEx = executeEx;
-                ActionInterceptorFactory.getInterceptorList().stream()
+                ActionInterceptorFactory.getInterceptorSet().stream()
                     .sorted(Comparator.comparingInt(ActionInterceptor::order).reversed())
                     .forEach(
                         interceptor -> interceptor.afterComplete(source.getId(), target.getId(), event, ctx, finalEx));

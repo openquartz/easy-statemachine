@@ -62,6 +62,12 @@
             </dependency>
 
             <dependency>
+                <groupId>com.openquartz</groupId>
+                <artifactId>easystatemachine-spring-boot-starter</artifactId>
+                <version>${revision}</version>
+            </dependency>
+
+            <dependency>
                 <groupId>org.slf4j</groupId>
                 <artifactId>slf4j-api</artifactId>
                 <version>${slf4j.version}</version>
