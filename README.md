@@ -1,4 +1,8 @@
 # Easy-Statemachine
+
+## 欢迎Star!!!
+**[主页](https://openquartz.github.io/)** \
+**[Github](https://github.com/openquartz/easy-file)**
 > **注意**：本项目未发布到maven中央仓库，需要手动添加到本地仓库 或者 到私有仓库中使用。
 
 一款简单易用的轻量级状态机框架。基于COLA StateMachine实现。
